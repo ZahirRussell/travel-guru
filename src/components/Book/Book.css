@@ -1,0 +1,25 @@
+.myForm {
+    display: flex;
+    flex-direction: column;
+    background-color: beige;
+    border-radius: 3px;
+    padding: 2em;
+  }
+  
+
+  /* form specific formatting */
+ .form-group {
+    display: flex;
+    flex-direction: row;
+  }
+  
+.form-group {
+    margin-bottom: 0rem;
+}
+  
+  button {
+    padding: 5px 15px;
+    margin: 5px;
+    min-width: 100px
+  }
+  
