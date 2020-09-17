@@ -23,31 +23,6 @@ const Book = () => {
             </div>
             <div className="col-4 text-center"> 
                 <form className="myForm">
-                        {/* <div className="row">
-                            <div className="column">
-                            <div className="input-group">
-                                <label for="origin">Origin </label>
-                                <input id="origin"/>
-                            </div>
-                            <div className="input-group">
-                                <label for="destination">Destination </label>
-                                <input id="destination"/>
-                            </div>
-                            
-                            <div className="input-group">
-                                <label for="from">From</label>
-                                <input type="datetime-local" id="from"/>
-                            </div>  
-                            <div className="input-group">
-                                <label for="to">To</label>
-                                <input type="datetime-local" id="to"/>
-                            </div>                         
-                            </div>               
-                        </div>            
-                        <div className="row">                
-                            <button id="submit">Submit Booking</button>                
-                        </div> */}
-                        
                         <div className="form-group">
                             <label className="col-md-4 control-label">Origin</label>
                             <div className="col-md-8 r">
