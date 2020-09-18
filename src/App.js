@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+
 import {  
   BrowserRouter as Router,
   Switch,
@@ -25,18 +26,23 @@ function App() {
               <Route path="/login">
                 <Login />
               </Route>
-              <Route path="/book/:placeType/:description">
+              <Route path="/book/:id">
                 <Book />
               </Route>
-              <PrivateRoute path="/hotel/:placeType">
+              {/* <PrivateRoute path="/hotel/:locationName">
               <Hotel />
-              </PrivateRoute>
+              </PrivateRoute> */}
+               <Route path="/hotel/:locationName">
+                 <Hotel />
+              </Route>
               <Route exact path="/">
                 <Home />
               </Route>
             </Switch>
-        </Router>
+        </Router>    
       </UserContext.Provider>
+
+  
   );
 }
 
