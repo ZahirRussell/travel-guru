@@ -29,7 +29,7 @@ const TopMenu = () => {
                                 name: '',
                                 email: '',
                                 password: '',
-                                photo: ''
+                                message: ''
                             })} variant="warning" className="mx-2">Logout, {user.name}</Button> :
                             <Link to="/login">
                                 <Button variant="warning" className="mx-2">Login</Button>

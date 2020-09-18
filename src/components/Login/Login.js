@@ -7,6 +7,8 @@ import { Button, Container, Form, FormControl } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF,faGoogle } from "@fortawesome/free-brands-svg-icons"
 import './Login.css';
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
 
 function Login() {
@@ -17,7 +19,7 @@ function Login() {
     name: '',
     email: '',
     password: '',
-    photo: ''
+    message: ''
   });
 
   initializeLoginFramework();
@@ -74,22 +76,78 @@ function Login() {
       setUser(resUser);
   }
 
-  const handleSubmit = (e) => {
-    if(newUser && user.email && user.password){
-      createUserWithEmailAndPassword(user.name, user.email, user.password)
-      .then(res => {
-        handleResponse(res, true);
-      })
+  // const handleSubmit = (e) => {
+  //   if(newUser && user.email && user.password){
+  //     createUserWithEmailAndPassword(user.name, user.email, user.password)
+  //     .then(res => {
+  //       handleResponse(res, true);
+  //     })
+  //   }
+
+  //   if(!newUser && user.email && user.password){
+  //     signInWithEmailAndPassword(user.email, user.password)
+  //     .then(res => {
+  //       handleResponse(res, true);
+  //     })
+  //   }
+  //   e.preventDefault();
+  // }
+    // update name
+    const updateName = name => {
+      const currentUser = firebase.auth().currentUser;
+      currentUser.updateProfile({displayName: name})
+      .then()
+      .catch(error => {
+          console.log(error);
+      });
+     }
+
+  const handleSubmit = (e) => {        
+    // email sign in
+    if (newUser){
+        if(validData) {
+            firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+            .then(() => {
+                const newUserInfo = {
+                    signed: true,
+                    name: user.name,
+                    email: user.email,
+                    message: 'Login Successful'
+                }
+                setUser(newUserInfo);
+                updateName(user.name);
+                history.replace(from);
+            })
+            .catch(error => {
+                const newUserInfo = {...user};
+                newUserInfo.message = error.message;
+                setUser(newUserInfo);
+            });
+        }
     }
 
-    if(!newUser && user.email && user.password){
-      signInWithEmailAndPassword(user.email, user.password)
-      .then(res => {
-        handleResponse(res, true);
-      })
+    // email login
+    if (!newUser) {
+            firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+            .then(result => {
+                const {displayName, email} = result.user;
+                const newUserInfo = {
+                    signed: true,
+                    name: displayName,
+                    email: email,
+                    message: 'Login Successful'
+                }
+                setUser(newUserInfo);
+                history.replace(from);
+            })
+            .catch(error => {
+                const newUserInfo = {};
+                newUserInfo.message = error.message;
+                setUser(newUserInfo);
+            });
     }
     e.preventDefault();
-  }
+}
 
 
 
