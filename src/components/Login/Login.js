@@ -3,11 +3,15 @@ import { useContext } from 'react';
 import { UserContext } from '../../App';
 import { useHistory, useLocation } from 'react-router-dom';
 import { initializeLoginFramework, handleGoogleSignIn, handleSignOut, handleFbSignIn, createUserWithEmailAndPassword, signInWithEmailAndPassword } from './LoginManager';
+import { Button, Container, Form, FormControl } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebookF,faGoogle } from "@fortawesome/free-brands-svg-icons"
 import './Login.css';
 
 
 function Login() {
-  const [newUser, setNewUser] = useState(false);
+  const [newUser, setNewUser] = useState(true);
+  const [validData, setValidData] = useState(true);
   const [user, setUser] = useState({
     isSignedIn: false,
     name: '',
@@ -53,35 +57,32 @@ function Login() {
     }
   }
 
-  const handleFieldValidation = (e) => {
-    let isFieldValid = true;
-    if(e.target.name === 'email'){
-      isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
-    }
-    if(e.target.name === 'password'){
-      const isPasswordValid = e.target.value.length > 4;
-      const passwordHasNumber =  /\d{1}/.test(e.target.value);
-      isFieldValid = isPasswordValid && passwordHasNumber;
-    }
-    if(isFieldValid){
-      const newUserInfo = {...user};
-      newUserInfo[e.target.name] = e.target.value;
-      setUser(newUserInfo);
-    }
+     const handleBlur = (e) => {
+      const resUser = {...user};
+      resUser[e.target.name] = e.target.value;
+
+      if(e.target.name === 'confirm'){
+          if(e.target.value !== user.password){
+            resUser.message = "Password Didn't Match";
+              setValidData(false);
+          }
+          else{
+            resUser.message = '';
+              setValidData(true);
+          }
+      }
+      setUser(resUser);
   }
-  const handleCreateUser = (e) => {
-    if(user.email && user.password){
+
+  const handleSubmit = (e) => {
+    if(newUser && user.email && user.password){
       createUserWithEmailAndPassword(user.name, user.email, user.password)
       .then(res => {
-          console.log(res);
         handleResponse(res, true);
       })
     }
-    e.preventDefault();
-  }
 
-  const handleSignIn = (e) => { 
-    if(user.email && user.password){
+    if(!newUser && user.email && user.password){
       signInWithEmailAndPassword(user.email, user.password)
       .then(res => {
         handleResponse(res, true);
@@ -93,107 +94,74 @@ function Login() {
 
 
   return (
-    // <div style={{textAlign: 'center'}}>
-    //   { user.isSignedIn ? <button onClick={signOut}>Sign Out</button> :
-    //     <button onClick={googleSignIn}>Sign In</button>
-    //   }
-    //   <br/>
-    //   <button onClick={fbSignIn}>Sign in using Facebook</button>
-    //   {
-    //     user.isSignedIn && <div>
-    //       <p>Welcome, {user.name}!</p>
-    //       <p>Your email: {user.email}</p>
-    //       <img src={user.photo} alt=""/>
-    //     </div>
-    //   }
-
-    //   <h1>Our own Authentication</h1>
-    //   <input type="checkbox" onChange={() => setNewUser(!newUser)} name="newUser" id=""/>
-    //   <label htmlFor="newUser">New User Sign up</label>
-    //   <form onSubmit={handleSubmit}>
-    //     {newUser && <input name="name" type="text" onBlur={handleFieldValidation} placeholder="Your name"/>}
-    //     <br/>
-    //     <input type="text" name="email" onBlur={handleFieldValidation} placeholder="Your Email address" required/>
-    //     <br/>
-    //     <input type="password" name="password" onBlur={handleFieldValidation} placeholder="Your Password" required/>
-    //     <br/>
-    //     <input type="submit" value={newUser ? 'Sign up' : 'Sign in'}/>
-    //   </form>
-    //   <p style={{color: 'red'}}>{user.error}</p>
-    //   { user.success && <p style={{color: 'green'}}>User { newUser ? 'created' : 'Logged In'} successfully</p>}
-    // </div>
-
+    
 <div style={{marginTop:'100px'}} className="d-flex justify-content-center align-items-center">
              <div className="col-1">
              </div>
-             <div className="col-5 text-center"> 
+             <div className="col-6 text-center"> 
 
             <div className="container">   
                  <section>				
-                     <div id="container_demo" >
-                       <a className="hiddenanchor" id="toregister"></a>
-                         <a className="hiddenanchor" id="tologin"></a>
-                         <div id="wrapper">
-                             <div id="login" className="animate form">
-                                 <form  onSubmit={handleSignIn}>
-                                     <h1>Log in</h1>  
-                                    <p> 
-                                         <label for="email" className="uname" > Your email or username </label>
-                                         <input id="email" onBlur={handleFieldValidation} name="email" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
-                                    </p>
-                                   <p> 
-                                         <label for="password" className="youpasswd"> Your password </label>
-                                         <input id="password" name="password" onBlur={handleFieldValidation} required="required" type="password" placeholder="eg. X8df!90EO" /> 
-                                    </p>
-                                     <p className="signin button"> 
-                                         <input className="btn-block" type="submit" value="Sign in"/> 
-                                     </p>
-                                     <p style={{display:'flex'}}>
-                                         <button id="btn-fbsignup" onClick={fbSignIn} type="button" class="btn btn-primary"><i class="icon-facebook"></i>   with Facebook</button>&nbsp;&nbsp;&nbsp;
-                                         <button id="btn-fbsignup" onClick={handleGoogleSignIn} type="button" class="btn btn-warning"><i class="icon-facebook"></i>   with Google</button>
-                                     </p>
-                                     <p className="change_link">
-                                         Not a member yet ?
-                                         <a href="#toregister" className="to_register">Join us</a>
-                                    </p>
-                                 </form>
-                             </div>
+                 <Container className="text-center text-white">
+                  <div className="bg-dark rounded" id="login">
 
-                             <div id="register" className="animate form">
-                                 <form  onSubmit={handleCreateUser}> 
-                                     <h1> Sign up </h1> 
-                                    <p> 
-                                         <label for="name" className="uname" >Name</label>
-                                         <input name="name" type="text" required="required" onBlur={handleFieldValidation} placeholder="Your name"/>
-                                    </p>
-                                    <p> 
-                                         <label for="emailsignup" className="youmail"  > Your email</label>
-                                         <input name="emailsignup" required="required" onBlur={handleFieldValidation} placeholder="mysupermail@mail.com"/> 
-                                     </p>
-                                     <p> 
-                                         <label for="password" className="youpasswd" >Your password </label>
-                                         <input  name="password" required="required" type="password" onBlur={handleFieldValidation} placeholder="eg. X8df!90EO"/>
-                                     </p>
-                                     <p> 
-                                         <label for="password_confirm" className="youpasswd" >Please confirm your password </label>
-                                        <input name="password_confirm" required="required" type="password" onBlur={handleFieldValidation} placeholder="eg. X8df!90EO"/>
-                                    </p>
-                                    <p className="signin button"> 
-                                         <input type="submit" value="Sign up"/> 
-                                    </p>
-                                     <p style={{display:'flex'}}>
-                                         <button id="btn-fbsignup" onClick={fbSignIn} type="button" class="btn btn-primary"><i class="icon-facebook"></i>   with Facebook</button>&nbsp;&nbsp;&nbsp;
-                                         <button id="btn-fbsignup" onClick={handleGoogleSignIn} type="button" class="btn btn-warning"><i class="icon-facebook"></i>   with Google</button>
-                                     </p>
-                                     <p className="change_link">  
-                                         Already a member ?
-                                         <a href="#tologin" className="to_register"> Go and log in </a>
-                                     </p>
-                                 </form>
-                             </div>
-                            
-                         </div>
-                     </div>  
+                  <Form onSubmit={handleSubmit}>
+                  <h4 className="my-4">{newUser ? 'New User Sign up' : 'User Login'}</h4>
+                  <Form.Group>     
+                  <Form.Label className="col-3">{newUser && <span>Name</span>}</Form.Label>                 
+                      {                        
+                          newUser && <Form.Control className="col-9" onBlur={handleBlur} name="name" type="text" placeholder="Enter name" required /> 
+                      }                                          
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label className="col-3">Email</Form.Label>
+                      <Form.Control className="col-9"  onBlur={handleBlur} name="email" type="email" placeholder="Enter Email" required />                     
+                    </Form.Group>
+
+                    <Form.Group>
+                      <Form.Label className="col-3">Password</Form.Label>
+                      <Form.Control className="col-9" onBlur={handleBlur} name="password" type="password" placeholder="Password"  required />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label className="col-3">{newUser && <span>Confirm Password</span>}</Form.Label>
+                      {
+                          newUser && <FormControl onBlur={handleBlur} className="col-9"  type="password" name="confirm" placeholder="Confirm Password"  required />
+                      }
+                    </Form.Group>
+                    <Form.Group>
+                      <span className="col-3"></span>
+                       <button className="btn-warning btn-sm" type="submit">{newUser ? 'Sign Up' : 'Login'}</button>
+                      <span className="btn btn-link text-light" onClick={()=>{
+                              setNewUser(!newUser);
+                              setUser({
+                                  isSignedIn: false,
+                                  name: user.name,
+                                  email: user.email,
+                                  password: user.password,
+                                  photo: ''
+                              });
+                          }}>
+                              {
+                                  newUser ?
+                                  ' Not a member yet? Join us' :
+                                  ' Already a member ? Log in'
+                              }
+                          </span>
+                          </Form.Group>
+                          <h6 className="text-danger text-center">{user.message}</h6>
+                          <hr className="bg-white" />                          
+                          <Button className="btn-danger rounded-pill" onClick={googleSignIn}>
+                            <FontAwesomeIcon icon={faGoogle}/> 
+                            &nbsp; Sign in with Google
+                          </Button>
+                          &nbsp;
+                          <Button className="btn-primary rounded-pill" onClick={fbSignIn}>
+                            <FontAwesomeIcon icon={faFacebookF}/> 
+                              &nbsp;   Sign in with Facebook
+                          </Button>
+                  </Form>                          
+                  </div>
+              </Container> 
                  </section>
              </div>
              <div className="col-1">

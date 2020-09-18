@@ -1,36 +1,44 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../App';
+import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Logo from '../../Logo.png'
 
+
 const TopMenu = () => {
+    const [user, setUser] = useContext(UserContext);
     return (
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top x-navbar">
-        <div class="container">
-            <span class="navbar-brand"><img src={Logo} alt="" width="80"></img></span>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">                    
-                    <span class="nav-link">News</span>                
-                </li>
-                <li class="nav-item">                    
-                    <span class="nav-link">Destination</span>
-                </li>
-                <li class="nav-item">                    
-                    <span class="nav-link">Blog</span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link">Contact</span>
-                </li>
-                <li class="nav-item">                    
-                    <Link to="/login"><span class="btn btn-warning nav-link">Login</span></Link>
-                </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+        <Navbar collapseOnSelect expand="lg" variant="dark" fixed="top" id="nav" className="x-navbar">
+            <Container fluid>
+                <Link to="/">
+                    <Navbar.Brand>
+                        <img src={Logo} alt="" style={{filter: 'invert(100%)'}} width="110px" />
+                    </Navbar.Brand>
+                </Link>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav" className="text-center">
+                    <Nav className="ml-auto">
+                        <Nav.Link className="text-white">News</Nav.Link>
+                        <Nav.Link className="text-white">Destinations</Nav.Link>
+                        <Nav.Link className="text-white">Blog</Nav.Link>
+                        <Nav.Link className="text-white">Contact</Nav.Link>
+                        {
+                            user.signed ?
+                            <Button onClick={() => setUser({
+                                isSignedIn: false,
+                                name: '',
+                                email: '',
+                                password: '',
+                                photo: ''
+                            })} variant="warning" className="mx-2">Logout, {user.name}</Button> :
+                            <Link to="/login">
+                                <Button variant="warning" className="mx-2">Login</Button>
+                            </Link>
+                        }
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
 };
 

@@ -4,14 +4,11 @@ import './Home.css';
 
 
 
-const Home = () => {
-   
-
+const Home = () => {  
     return (
     <div> 
         <Slider/>
-    </div>
-        
+    </div>        
     );
 };
 

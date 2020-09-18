@@ -24,9 +24,9 @@ const Book = () => {
             </div>
 
             <div style={{color:'#ffffff'}} className="col-4 text-center">
-                <h1 className="place-header">{bookingDetails.AppendlocationName}</h1>
-                <h4 className="place-detail text-justify">{bookingDetails.description}</h4>
-                <p>Want a <Link to="/home">different place?</Link> </p>
+                <h1 className="place-header">{bookingDetails.locationName}</h1>
+                <p className="text-justify">{bookingDetails.description}</p>
+                <p>Want a <Link to="/home"><mark>different place?</mark></Link> </p>
             </div>
             <div className="col-1">
             </div>
@@ -70,7 +70,7 @@ const Book = () => {
 
 
                     <div className="form-group">
-                        <input type="submit" value="Booking" className="btn btn-block btn-warning"/>
+                        <input type="submit" value="Start Booking" className="btn btn-block btn-warning"/>
                     </div>
                 </form>
             </div>

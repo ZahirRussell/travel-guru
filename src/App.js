@@ -29,12 +29,9 @@ function App() {
               <Route path="/book/:id">
                 <Book />
               </Route>
-              {/* <PrivateRoute path="/hotel/:locationName">
+               <PrivateRoute path="/hotel/:locationName">
               <Hotel />
-              </PrivateRoute> */}
-               <Route path="/hotel/:locationName">
-                 <Hotel />
-              </Route>
+              </PrivateRoute>               
               <Route exact path="/">
                 <Home />
               </Route>

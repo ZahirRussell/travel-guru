@@ -28,17 +28,7 @@ const Hotel = () => {
                                 <Col sm={6}>
                                     <img src={hotel.photo} alt={hotel.fullName} className="rounded w-100 h-100"/>
                                 </Col>
-                                <Col sm={6}>
-                                    {/* <h5>{hotel.fullName}</h5>
-                                    <div className="d-flex justify-content-between">
-                                        <h6>Per Night: ${hotel.rate}</h6>
-                                    </div>
-                                    <ul className="list-unstyled mt-4">
-                                        <li> <FontAwesomeIcon icon={faStar}/>&nbsp;{hotel.score}</li>
-                                        <li>
-                                            <button className="btn btn-warning rounded-pill btn-sm btn-block mt-1">Book Now</button>
-                                        </li>
-                                    </ul> */}
+                                <Col sm={6}>                                    
                                       <Card border="secondary" style={{ width: '18rem' }}>
                                         <Card.Body>
                                         <Card.Title className="place-header">{hotel.fullName}</Card.Title>
@@ -62,73 +52,14 @@ const Hotel = () => {
                             </Row>)
                         }
                     </Col>  
-                    <Col md={6} className="my-3">
-                         <iframe title={locationName} className="rounded" src={map} width="90%" height="540" frameBorder="1" allowFullScreen="" aria-hidden="false" tabIndex="0"></iframe>
+                    <Col md={5} className="p-4">
+                         <iframe title={locationName} className="rounded" src={map} width="100%" height="540" frameBorder="1" allowFullScreen="" aria-hidden="false" tabIndex="0"></iframe>
                     </Col>                
                 </Row>
             </Container>
             </div> 
             </div> 
     );
-
-
-    // const {id} = useParams();
-    // const {hotels, map} = hotelData.find(location => location.id === id);
-    // console.log(hotels[0]);
-    // return (        
-    //     <div style={{marginTop:'100px'}} className="d-flex justify-content-center align-items-center">
-    //         <div className="col-1">
-    //         </div>
-
-    //         <div style={{color:'#ffffff'}} className="col-4 text-center">
-    //             <div className="card card-inverse card-info">
-    //                 {
-    //                      hotels.map(hotel => 
-    //                         <Row key={hotel.name} className="align-items-stretch bg-light p-3 text-dark rounded my-3">
-    //                             <Col sm={6}>
-    //                                 <img src={hotel.photo} alt="" className="w-100 h-100 mb-3"/>
-    //                             </Col>
-    //                             <Col sm={6}>
-    //                                 <h5>{hotel.name}</h5>
-    //                                 <div className="d-flex justify-content-between">
-    //                                     <h6>{hotel.rating}<span className="w-25 mb-1 mr-1"> <FontAwesomeIcon icon={faStar} /></span></h6>
-    //                                     <h6>Night: ${hotel.perNight}</h6>
-    //                                 </div>
-    //                                 <ul className="list-unstyled mt-4">
-    //                                     <li>AC / nonAC, Free Wifi, Bathroom</li>
-    //                                     <li>
-    //                                         <button className="btn btn-warning rounded-pill btn-sm btn-block mt-1">Book Now</button>
-    //                                     </li>
-    //                                 </ul>
-    //                             </Col>
-    //                         </Row>
-
-    //                         // `<img className="card-img-top" src=${hotel.photo} alt=""></img>
-    //                         // <div className="card-body">
-    //                         //         <h4 className="card-title mt-3">${hotel.locationName}</h4>
-    //                         //         <div className="meta card-text">
-    //                         //         <span className="float-right">
-    //                         //             <FontAwesomeIcon icon={faDollarSign} />&nbsp;<strong>${hotel.rate}</strong>
-    //                         //         </span>
-    //                         //         </div>
-    //                         //         <div className="card-text">
-    //                         //             ${hotel.description}
-    //                         //         </div>
-    //                         //     </div>
-    //                         //     <div className="card-footer">
-    //                         //         <FontAwesomeIcon icon={faClock} /> <strong>{hotel.price}</strong><span> (Total Hours)</span>
-    //                         // </div>`
-    //                      )
-    //                 }   
-    //             </div>
-    //         </div>
-    //         <div className="col-1">
-    //         </div>
-    //         <div className="col-4 text-center"> 
-    //             {/* <iframe title={locationName} src={map} width="100%" height="675" frameBorder="1" allowFullScreen="" aria-hidden="false" tabIndex="0"></iframe> */}
-    //         </div> 
-    //     </div>   
-    // );
 };
 
 export default Hotel;
