@@ -15,7 +15,7 @@ function Login() {
   const [newUser, setNewUser] = useState(true);
   const [validData, setValidData] = useState(true);
   const [user, setUser] = useState({
-    isSignedIn: false,
+    signed: false,
     name: '',
     email: '',
     password: '',
@@ -76,80 +76,22 @@ function Login() {
       setUser(resUser);
   }
 
-  // const handleSubmit = (e) => {
-  //   if(newUser && user.email && user.password){
-  //     createUserWithEmailAndPassword(user.name, user.email, user.password)
-  //     .then(res => {
-  //       handleResponse(res, true);
-  //     })
-  //   }
-
-  //   if(!newUser && user.email && user.password){
-  //     signInWithEmailAndPassword(user.email, user.password)
-  //     .then(res => {
-  //       handleResponse(res, true);
-  //     })
-  //   }
-  //   e.preventDefault();
-  // }
-    // update name
-    const updateName = name => {
-      const currentUser = firebase.auth().currentUser;
-      currentUser.updateProfile({displayName: name})
-      .then()
-      .catch(error => {
-          console.log(error);
-      });
-     }
-
-  const handleSubmit = (e) => {        
-    // email sign in
-    if (newUser){
-        if(validData) {
-            firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-            .then(() => {
-                const newUserInfo = {
-                    signed: true,
-                    name: user.name,
-                    email: user.email,
-                    message: 'Login Successful'
-                }
-                setUser(newUserInfo);
-                updateName(user.name);
-                history.replace(from);
-            })
-            .catch(error => {
-                const newUserInfo = {...user};
-                newUserInfo.message = error.message;
-                setUser(newUserInfo);
-            });
-        }
+  const handleSubmit = (e) => {
+    if(newUser && user.email && user.password){
+      createUserWithEmailAndPassword(user.name, user.email, user.password)
+      .then(res => {
+        handleResponse(res, true);
+      })
     }
 
-    // email login
-    if (!newUser) {
-            firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-            .then(result => {
-                const {displayName, email} = result.user;
-                const newUserInfo = {
-                    signed: true,
-                    name: displayName,
-                    email: email,
-                    message: 'Login Successful'
-                }
-                setUser(newUserInfo);
-                history.replace(from);
-            })
-            .catch(error => {
-                const newUserInfo = {};
-                newUserInfo.message = error.message;
-                setUser(newUserInfo);
-            });
+    if(!newUser && user.email && user.password){
+      signInWithEmailAndPassword(user.email, user.password)
+      .then(res => {
+        handleResponse(res, true);
+      })
     }
     e.preventDefault();
-}
-
-
+  }
 
   return (
     
@@ -192,11 +134,11 @@ function Login() {
                       <span className="btn btn-link text-light" onClick={()=>{
                               setNewUser(!newUser);
                               setUser({
-                                  isSignedIn: false,
+                                  signed: false,
                                   name: user.name,
                                   email: user.email,
                                   password: user.password,
-                                  photo: ''
+                                  message: ''
                               });
                           }}>
                               {

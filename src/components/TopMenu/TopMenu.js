@@ -25,7 +25,7 @@ const TopMenu = () => {
                         {
                             user.signed ?
                             <Button onClick={() => setUser({
-                                isSignedIn: false,
+                                signed: false,
                                 name: '',
                                 email: '',
                                 password: '',
